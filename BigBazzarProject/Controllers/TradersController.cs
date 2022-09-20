@@ -81,9 +81,12 @@ namespace BigBazzar.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrader(int id)
         {
-            await _repository.DeleteTraders(id);
+            bool ans= await _repository.DeleteTraders(id);
 
-            return NoContent();
+            if(ans)
+                return Ok();
+            else
+                return BadRequest();
         }
 
     }

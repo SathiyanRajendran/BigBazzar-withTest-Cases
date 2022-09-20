@@ -20,6 +20,11 @@ namespace BigBazzar.Repository
             _context = context;
         }
 
+        public TraderRepo(BigBazzarContext context)
+        {
+            _context = context;
+        }
+
         public async Task<Traders> AddNewTraders(Traders T)
         {
             _context.Traders.Add(T);
@@ -27,17 +32,18 @@ namespace BigBazzar.Repository
             return T;
         }
 
-        public async Task DeleteTraders(int TraderId)
+        public async Task<bool> DeleteTraders(int TraderId)
         {
             try
             {
                 Traders T = _context.Traders.Find(TraderId);
                 _context.Traders.Remove(T);
                 await _context.SaveChangesAsync();
+                return true;
             }
             catch
             {
-                throw new NotImplementedException();
+                return false;   
             }
         }
 
