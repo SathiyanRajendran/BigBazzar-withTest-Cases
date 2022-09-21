@@ -28,7 +28,7 @@ namespace BigBazzar.Repository
             }
         }
 
-        public async Task DeleteFromCart(int id)
+        public async Task<bool> DeleteFromCart(int id)
             //here we delete the cart by the cartid.
         {
             try
@@ -36,10 +36,11 @@ namespace BigBazzar.Repository
                 Carts carts = _context.Carts.Find(id);
                 _context.Carts.Remove(carts);
                 await _context.SaveChangesAsync();
+                return true;
             }
             catch
             {
-                throw new NotImplementedException();
+                return false;
             }
         }
 

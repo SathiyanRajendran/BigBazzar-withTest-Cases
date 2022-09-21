@@ -22,6 +22,11 @@ namespace BigBazzar.Controllers
             List<Carts> result = await _repository.GetAllCart(id);
             return result;
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Carts>> CartById(int id)
+        {
+            return await _repository.GetCartById(id);
+        }
         [HttpPost]
         public async Task<ActionResult<Carts>> AddCart(Carts cart)//(api/carts)
         {
@@ -36,8 +41,11 @@ namespace BigBazzar.Controllers
         public async Task<ActionResult> DeleteCart(int id) //(API/CARTS/{ID})
         {
             
-            await _repository.DeleteFromCart(id);
-            return NoContent();
+            bool ans=await _repository.DeleteFromCart(id);
+            if (ans)
+                return Ok();
+            else
+                return BadRequest();
         }
 
     }

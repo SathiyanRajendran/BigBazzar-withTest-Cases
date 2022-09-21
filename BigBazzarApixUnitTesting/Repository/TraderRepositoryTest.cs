@@ -1,6 +1,7 @@
 ﻿using BigBazzar.Data;
 using BigBazzar.Models;
 using BigBazzar.Repository;
+using BigBazzarApixUnitTesting.DatabaseContext;
 using FluentAssertions;
 using FluentAssertions.Equivalency.Tracing;
 using Microsoft.EntityFrameworkCore;
@@ -140,7 +141,16 @@ namespace BigBazzarApixUnitTesting.Repository
         [Fact]
         public async Task TraderRepo_GetProductByTraderId_ReturnsProduct()
         {
-            
+            var tempdbContext = new DbContextTest();
+            var dbContext=await tempdbContext.GetDatabaseContext();
+            var traderRepository = new TraderRepo(dbContext);
+
+            //Act
+            var result = await traderRepository.GetProductByTraderId(1000);
+            //Assert
+            var tempProduct = result[1];
+           // result.Count().Should().Be(4);
+            "Boost1".Should().Be(tempProduct.ProductName);
         }
     }
 }

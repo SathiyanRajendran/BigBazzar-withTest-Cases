@@ -21,7 +21,7 @@ namespace BigBazzarApixUnitTesting.Repository
             var databaseContext = new BigBazzarContext(options);
             databaseContext.Database.EnsureCreated();
             int idno = 10;
-            if (await databaseContext.Traders.CountAsync() <= 0)
+            if (await databaseContext.Products.CountAsync() <= 0)
             {
                 for (int i = 0; i < 5; i++)
                 {
@@ -82,6 +82,8 @@ namespace BigBazzarApixUnitTesting.Repository
             //Assert
            dbContext.Products.Should().HaveCount(6);
             result.Should().BeEquivalentTo(product);
+           
+
         }
         [Fact]
         public async Task ProductRepository_EditProduct_ReturnEdit()
