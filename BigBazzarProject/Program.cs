@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BigBazzarContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BigBazzarContext") ?? throw new InvalidOperationException("Connection string 'BigBazzarContext' not found.")));
+
 //-----------------------------------------------------------
 //for JWT Authentication injection
 ConfigurationManager configuration = builder.Configuration;

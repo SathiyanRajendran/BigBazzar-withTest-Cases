@@ -44,8 +44,6 @@ namespace BigBazzar.Repository
 
         public async Task<Customers> UpdateCustomer(int id, Customers customer)
         {
-          
-
             _context.Update(customer);
             await _context.SaveChangesAsync();
             return customer;

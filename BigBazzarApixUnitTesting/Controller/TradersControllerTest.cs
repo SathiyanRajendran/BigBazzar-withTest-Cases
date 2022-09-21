@@ -25,7 +25,7 @@ namespace BigBazzarApixUnitTesting.Controller
         public void TradersController_GetTraders_ReturnOK()
         {
             //Arrange
-            var traders = A.Fake<ICollection<Traders>>();
+           // var traders = A.Fake<ICollection<Traders>>();
             var tradersList=A.Fake<List<Traders>>();
             A.CallTo(() =>_repository.GetAllTraders()).Returns(tradersList);
             var controller = new TradersController(_repository);
@@ -45,15 +45,15 @@ namespace BigBazzarApixUnitTesting.Controller
             Traders trader = new Traders
             {
                 TraderId = 1001,
-                TraderEmail = "akhil@gmail.com",
-                TraderName = "akhil",
+                TraderEmail = "abcd@gmail.com",
+                TraderName = "abcd",
                 Password = "12345",
                 ConfirmPassword = "12345",
 
             };
             //var traderspost = A.Fake<Traders>();
-            var traders = A.Fake<ICollection<Traders>>();
-            var tradersList = A.Fake<List<Traders>>();
+           // var traders = A.Fake<ICollection<Traders>>();
+            //var tradersList = A.Fake<List<Traders>>();
             A.CallTo(() => _repository.AddNewTraders(trader)).Returns(trader);
             var controller = new TradersController(_repository);
 
@@ -64,6 +64,7 @@ namespace BigBazzarApixUnitTesting.Controller
             //Assert
             var name = t.TraderName;
             name.Should().BeEquivalentTo(name);
+            //result.Should().BeEquivalentTo(trader);
         }
         [Fact]
         public async Task TradersController_PutTrader_ReturnOk()
@@ -123,6 +124,7 @@ namespace BigBazzarApixUnitTesting.Controller
             //Assert
             var name="Sathiyan";
             name.Should().Be(trader.TraderName);
+         
 
         }
         [Fact]
@@ -155,7 +157,9 @@ namespace BigBazzarApixUnitTesting.Controller
             var count=result.Value.Count();
             id.Should().Be(traderId);
             count.Should().Be(3);
+            
             result.Should().NotBeNull();
+            
 
         }
     }
