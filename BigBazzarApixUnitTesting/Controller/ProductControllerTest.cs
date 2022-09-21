@@ -103,7 +103,14 @@ namespace BigBazzarApixUnitTesting.Controller
         [Fact]
         public async Task ProductsController_DeleteProduct_ReturnOk()
         {
-
+            //Arrange
+            var productId = 1000;
+            A.CallTo(() => _repository.DeleteProduct(productId)).Returns(true);
+            var controller = new ProductsController(_repository);
+            //Act
+            var result = await controller.DeleteProduct(productId);
+            //Assert
+            result.Should().BeOfType(typeof(OkResult));
         }
     }
 }
