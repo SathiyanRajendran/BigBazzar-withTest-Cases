@@ -81,5 +81,28 @@ namespace BigBazzarApixUnitTesting.Controller
             result.Should().NotBeNull();
             result.Value.Should().BeEquivalentTo(customers);
         }
+        [Fact]
+        public async Task CustomersController_PutCustomer_ReturnOk()
+        {
+            //Arrange
+            var id = 1000;
+            var customers = new Customers()
+            {
+                CustomerId= id,
+                CustomerName="abcd",
+                CustomerEmail="abc@gmail.com",
+                CustomerCity="xsxsx",
+                Password="12345",
+                ConfirmPassword="12345",
+            };
+            A.CallTo(() => _repository.UpdateCustomer(id, customers)).Returns(customers);
+            var controller=new CustomersController(_repository);
+            //Act
+            var result = await controller.PutCustomer(id,customers);
+            //Assert
+            var name = "abcd";
+            name.Should().BeSameAs(customers.CustomerName);
+            result.Value.Should().BeEquivalentTo(customers);
+        }
     }
 }

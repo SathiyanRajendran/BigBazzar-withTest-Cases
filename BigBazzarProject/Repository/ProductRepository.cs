@@ -19,17 +19,18 @@ namespace BigBazzar.Repository
             return product;
         }
 
-        public async Task DeleteProduct(int productId)
+        public async Task<bool> DeleteProduct(int productId)
         {
             try
             {
                 Products P=_context.Products.Find(productId);
                 _context.Products.Remove(P);
-                await _context.SaveChangesAsync();  
+                await _context.SaveChangesAsync(); 
+                return true;
             }
             catch
             {
-                throw new NotImplementedException();
+                return false;
             }
         }
 

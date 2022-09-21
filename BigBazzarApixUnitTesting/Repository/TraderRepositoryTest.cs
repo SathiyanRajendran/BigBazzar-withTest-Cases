@@ -56,7 +56,7 @@ namespace BigBazzarApixUnitTesting.Repository
 
             //Assert
             var count=result.Count();
-           result.Should().NotBeNull();
+            result.Should().NotBeNull();
             result.Should().HaveCount(count);
         }
         [Fact]
