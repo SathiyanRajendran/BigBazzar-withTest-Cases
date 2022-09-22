@@ -21,7 +21,7 @@ namespace BigBazzar.Controllers
         public async Task<ActionResult<OrderMasters>> GetOrderMaster(int id)//HERE WE GET THE ORDERMASTER TABLE OF ID WE GIVE(OM ID) 
                                                                                  //(API/ORDER/ID)
         {
-            return await _orderrepository.GetOrderMasterById(id);
+            return Ok( await _orderrepository.GetOrderMasterById(id));
         }
         [HttpPut]
         public async Task<ActionResult<OrderMasters>> PutOrderMaster(int id, OrderMasters om)     //Here I update the order master by the total amount=amount paid by the 
@@ -33,17 +33,17 @@ namespace BigBazzar.Controllers
         [HttpPost("orderMaster")]
         public async Task<ActionResult<OrderMasters>> PostOrderMaster(OrderMasters om)
         {
-            return await _orderrepository.AddOrderMaster(om);
+            return Ok( await _orderrepository.AddOrderMaster(om));
         }
         [HttpPost("orderDetail")]
         public async Task<ActionResult<OrderDetails>> PostOrderDetail(OrderDetails od)
         {
-            return await _orderrepository.AddOrderDetail(od);
+            return Ok( await _orderrepository.AddOrderDetail(od));
         }
         [HttpGet("orderDetail")]
         public async Task<ActionResult<OrderDetails>> GetOrderDetail(int id)
         {
-            return await _orderrepository.GetOrderDetailById(id);
+            return Ok( await _orderrepository.GetOrderDetailById(id));
         }
         [HttpPost("{customerid}")]
         public async Task<OrderMasters> Buy([FromRoute]int customerid) //THIS WILL SHOWS THE ORDER DETAILS AND ORDER MASTER OF THE DB 

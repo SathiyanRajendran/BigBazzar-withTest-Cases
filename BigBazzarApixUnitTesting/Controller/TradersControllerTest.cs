@@ -101,6 +101,7 @@ namespace BigBazzarApixUnitTesting.Controller
             //Act
             var result=await controller.DeleteTrader(traderId);
             //Assert
+            
             result.Should().BeOfType(typeof(OkResult));        
         }
         [Fact]
@@ -126,6 +127,8 @@ namespace BigBazzarApixUnitTesting.Controller
             result.Should().NotBeNull();
             var name="Sathiyan";
             name.Should().Be(trader.TraderName);
+
+
          
 
         }
@@ -142,7 +145,7 @@ namespace BigBazzarApixUnitTesting.Controller
                 {
                     TraderId = traderId,
                     ProductId = productId++,
-                    ProductName = "Boost",
+                    ProductName = "Boost"+i,
                     ProductQuantity = 1,
                     UnitPrice = 12,
                     CategoryId = 1,
@@ -155,7 +158,7 @@ namespace BigBazzarApixUnitTesting.Controller
             //Act
             var result= await controller.GetProductByTraderId(traderId);
             //Assert
-            var id = result.Value[0].TraderId;  //returns value inside the result
+            var id = result.Value[0].TraderId;
             var count=result.Value.Count();
             id.Should().Be(traderId);
             count.Should().Be(3);
