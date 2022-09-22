@@ -22,7 +22,7 @@ namespace BigBazzar.Controllers
             return await _repository.GetAllTraders();
         }
         [Authorize]
-        [HttpGet("TraderId")]
+        [HttpGet("{TraderId}")]
         public async Task<ActionResult<List<Products>>> GetProductByTraderId(int id)//It can shows the products details added by the Traders
         {
             return await _repository.GetProductByTraderId(id);

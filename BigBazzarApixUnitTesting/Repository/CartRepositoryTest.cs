@@ -28,6 +28,18 @@ namespace BigBazzarApixUnitTesting.Repository
             4.Should().Be(result.Count);
             var tempdata = result.First();
             12.Should().Be(tempdata.ProductQuantity);
+
+            //Act
+            try
+            {
+                var result1 = await cartRepository.GetAllCart(100);
+                //Assert
+                result1.Should().BeNullOrEmpty();
+            }
+            catch(Exception e)
+            {
+                throw new ArgumentNullException("Id is not matched");
+            }
         }
         [Fact]
         public async Task CartRepository_GetCartById_ReturnCarts()

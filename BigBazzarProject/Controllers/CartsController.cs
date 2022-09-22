@@ -22,7 +22,7 @@ namespace BigBazzar.Controllers
             List<Carts> result = await _repository.GetAllCart(id);
             return result;
         }
-        [HttpGet("{id}")]
+        [HttpGet("id")]
         public async Task<ActionResult<Carts>> CartById(int id)
         {
             return await _repository.GetCartById(id);

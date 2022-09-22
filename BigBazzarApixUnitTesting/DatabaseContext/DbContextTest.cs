@@ -54,6 +54,27 @@ namespace BigBazzarApixUnitTesting.DatabaseContext
                         ProductId = 101+i,
                     }
                    );
+                databaseContext.OrderMasters.Add(
+                     new OrderMasters()
+                     {
+                         OrderMasterId = idno++,
+                         CustomerId = 1000,
+                         CardNumber="890678"+i,
+                         Total=1200+i,
+                         AmountPaid=1200 + i,
+                         
+                     }
+                    );
+                databaseContext.OrderDetails.Add(
+                    new OrderDetails()
+                    {
+                        OrderDetailId = idno++,
+                        OrderMasterId = 10 + i,
+                        ProductId = 100 + i,
+                        ProductRate = 150 + i,
+                        ProductQuantity = 2 + i,
+                    }
+                    );
 
 
                     await databaseContext.SaveChangesAsync();

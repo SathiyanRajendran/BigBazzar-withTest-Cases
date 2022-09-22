@@ -21,18 +21,18 @@ namespace BigBazzar.Repository
 
         public async Task<OrderMasters> AddOrderMaster(OrderMasters orderMaster)
         {
-            var IncompleteOrderMaster = (from i in _context.OrderMasters where i.CustomerId == orderMaster.CustomerId select i).OrderBy(x => x.CustomerId).ToList();
-            if (IncompleteOrderMaster != null)
-            {
-                foreach (var incompleteOrderMaster in IncompleteOrderMaster)
-                {
-                    if (incompleteOrderMaster.AmountPaid == null || incompleteOrderMaster.CardNumber == null)
-                    {
-                        _context.Remove(incompleteOrderMaster);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
+            //var IncompleteOrderMaster = (from i in _context.OrderMasters where i.CustomerId == orderMaster.CustomerId select i).OrderBy(x => x.CustomerId).ToList();
+            //if (IncompleteOrderMaster != null)
+            //{
+            //    foreach (var incompleteOrderMaster in IncompleteOrderMaster)
+            //    {
+            //        if (incompleteOrderMaster.AmountPaid == null || incompleteOrderMaster.CardNumber == null)
+            //        {
+            //            _context.Remove(incompleteOrderMaster);
+            //            await _context.SaveChangesAsync();
+            //        }
+            //    }
+            //}
             _context.Add(orderMaster);
             await _context.SaveChangesAsync();
             return orderMaster;

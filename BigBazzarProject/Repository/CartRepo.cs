@@ -57,8 +57,11 @@ namespace BigBazzar.Repository
                                                           // Here include denotes the "Instead of productid here I use the productname,quantity"
                                                           //customer can only see the carts which he have.
         {
-            List<Carts> cartList =await (from c in _context.Carts.Include(x => x.Products) where c.CustomerId == customerId select c).ToListAsync();
-            return cartList;
+           
+            List<Carts> cartList = await (from c in _context.Carts.Include(x => x.Products) where c.CustomerId == customerId select c).ToListAsync();
+
+                return cartList;
+           
         }
         public async Task<Carts> GetCartById(int cartid)
             //here we get the carts by the cartid.
