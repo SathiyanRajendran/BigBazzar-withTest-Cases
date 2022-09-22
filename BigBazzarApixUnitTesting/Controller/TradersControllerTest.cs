@@ -104,7 +104,7 @@ namespace BigBazzarApixUnitTesting.Controller
             result.Should().BeOfType(typeof(OkResult));        
         }
         [Fact]
-        public async Task TradersController_GetTrader_ReturnOk()
+        public async Task TradersController_GetTraderById_ReturnOk()
         {
             //Arrange
             var traderId=1000;
@@ -120,8 +120,10 @@ namespace BigBazzarApixUnitTesting.Controller
             var controller = new TradersController(_repository);
 
             //Act
-            var result = await controller.GetTrader(traderId);
+            var tempresult = await controller.GetTrader(traderId);
+            var result = (tempresult.Result as OkObjectResult).Value as Traders;  //returns 200 status code
             //Assert
+            result.Should().NotBeNull();
             var name="Sathiyan";
             name.Should().Be(trader.TraderName);
          
@@ -153,7 +155,7 @@ namespace BigBazzarApixUnitTesting.Controller
             //Act
             var result= await controller.GetProductByTraderId(traderId);
             //Assert
-            var id=traderId;
+            var id = result.Value[0].TraderId;  //returns value inside the result
             var count=result.Value.Count();
             id.Should().Be(traderId);
             count.Should().Be(3);

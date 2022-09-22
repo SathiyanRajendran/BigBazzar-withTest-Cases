@@ -30,7 +30,9 @@ namespace BigBazzar.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Traders>> GetTrader(int id) //It can shows the trader Details
         {
-            return await _repository.GetTraderbyId(id);
+            return Ok(await _repository.GetTraderbyId(id));
+            //var trader= await _repository.GetTraderbyId(id);
+            //return Ok(trader);
         }
         [HttpPut("{id}")]
         public async Task<ActionResult<Traders>> PutTrader(int id,Traders T)
