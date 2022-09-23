@@ -63,7 +63,7 @@ namespace BigBazzar.Repository
             if (orderMaster.AmountPaid == orderMaster.Total)
             {
                 _context.Update(orderMaster);
-                await _context.SaveChangesAsync();
+               // await _context.SaveChangesAsync();
                 List<Carts> c = (from i in _context.Carts where i.CustomerId == orderMaster.CustomerId select i).ToList();
                                                                     //Here I show the list of carts owned by the customerId from the db.
                 foreach(var cart in c)

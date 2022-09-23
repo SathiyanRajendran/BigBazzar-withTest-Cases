@@ -61,16 +61,21 @@ namespace BigBazzarApixUnitTesting.Repository
         [Fact]
         public async Task OrderRepo_UpdateOrdermaster_ReturnOM()
         {
+            //var carts = new Carts()
+            //{
+            //    CustomerId = 1000,
+            //    ProductId = 101,
+            //};
             var id = 1003;
             var ordermaster = new OrderMasters()
             {
                 OrderMasterId = id,
-                CustomerId = 1002,
+                CustomerId = 1001,
                 CardNumber = "890678910",
-                Total = 1300,
-                AmountPaid = 1300,
-                
+                Total = 1300, //here total and amount paid must be equal
+                AmountPaid = 1300,              
             };
+           
             var inmemorytest=new DbContextTest();
             var dbContext=await inmemorytest.GetDatabaseContext();
             var orderrepo= new OrderRepo(dbContext);
@@ -112,6 +117,7 @@ namespace BigBazzarApixUnitTesting.Repository
                 ProductId = 123,
                 ProductRate = 150,
                 ProductQuantity = 2,
+                
             };
             var inmemoryTest=new DbContextTest();
             var dbContext=await inmemoryTest.GetDatabaseContext();

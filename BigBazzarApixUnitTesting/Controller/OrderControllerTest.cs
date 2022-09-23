@@ -140,6 +140,36 @@ namespace BigBazzarApixUnitTesting.Controller
             result.Should().BeEquivalentTo(orderdetail);
             result.ProductQuantity.Should().Be(3);
         }
+        [Fact]
+        public async Task OrderController_Buy_ReturnOk()
+        {
+            var cart = new Carts()
+            {
+                CartId = 11,
+                ProductQuantity = 2,
+                ProductId = 13,
+                CustomerId = 1000,
+                           
+            };
+            var ordermaster = new OrderMasters()
+            {
+                OrderMasterId = 1,
+                CustomerId = cart.CustomerId,
+                OrderDate = 2022,
+                Total = 26,
+                AmountPaid = 26,
+                CardNumber = "12345",
+            };
+            var orderdetail = new OrderDetails()
+            {
+                OrderDetailId = 11,
+                OrderMasterId = ordermaster.OrderMasterId,
+                ProductRate = 2,
+                ProductQuantity = 2,
+                ProductId = 13,
 
+            };
+          
+        }
     }
 }

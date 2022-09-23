@@ -34,9 +34,14 @@ namespace BigBazzarApixUnitTesting.Repository
                         TraderEmail = "abcd" + i + "@gmail.com",
                         TraderName = "abc" + i,
                         Password = "12345678",
-                        ConfirmPassword = "12345678",
+                        ConfirmPassword = "123458",
                     };
                     databaseContext.Traders.Add(trader);
+                    foreach (var tracker in databaseContext.ChangeTracker.Entries<Traders>())
+                    {
+                        //Console.WriteLine(tracker.State);
+                        Console.WriteLine(databaseContext.ChangeTracker.DebugView.ShortView);
+                    }
                     await databaseContext.SaveChangesAsync();
 
                 }
@@ -96,6 +101,11 @@ namespace BigBazzarApixUnitTesting.Repository
             var traderRepository = new TraderRepo(dbContext);
             //Act
             var result=await traderRepository.AddNewTraders(traders1);
+            foreach (var tracker in dbContext.ChangeTracker.Entries<Traders>())
+            {
+                //Console.WriteLine(tracker.State);
+                Console.WriteLine(dbContext.ChangeTracker.DebugView.ShortView);
+            }
             //Assert
             result.Should().BeEquivalentTo(traders1);
             dbContext.Traders.Count().Should().Be(6);
@@ -133,7 +143,12 @@ namespace BigBazzarApixUnitTesting.Repository
             //Act
             var trader = await dbContext.Traders.FindAsync(traders.TraderId);
             dbContext.Entry<Traders>(trader).State = EntityState.Detached;//has to be used only on xUnittesting
+            foreach (var tracker in dbContext.ChangeTracker.Entries<Traders>())
+            {
+                Console.WriteLine(tracker.State);
+            }
             var result = await traderRepository.UpdateTraders(id,traders);
+           
             //Assert
             result.Should().BeEquivalentTo(traders);
             dbContext.Traders.Should().HaveCount(5);

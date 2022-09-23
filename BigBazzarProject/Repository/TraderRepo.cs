@@ -28,6 +28,11 @@ namespace BigBazzar.Repository
         public async Task<Traders> AddNewTraders(Traders T)
         {
             _context.Traders.Add(T);
+            foreach (var tracker in _context.ChangeTracker.Entries<Traders>())
+            {
+                //Console.WriteLine(tracker.State);
+                Console.WriteLine(_context.ChangeTracker.DebugView.ShortView);
+            }
             await _context.SaveChangesAsync();
             return T;
         }
@@ -125,6 +130,11 @@ namespace BigBazzar.Repository
         public async Task<Traders> UpdateTraders(int TraderId, Traders Trader)
         {
             _context.Update(Trader);
+            //Console.WriteLine(tracker.State);
+            foreach (var tracker in _context.ChangeTracker.Entries<Traders>())
+            {
+                Console.WriteLine(tracker.State);
+            }
             _context.SaveChanges();
             return Trader;
         }

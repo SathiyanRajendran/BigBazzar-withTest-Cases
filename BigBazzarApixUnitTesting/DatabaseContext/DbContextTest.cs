@@ -58,7 +58,7 @@ namespace BigBazzarApixUnitTesting.DatabaseContext
                      new OrderMasters()
                      {
                          OrderMasterId = idno++,
-                         CustomerId = 1000,
+                         CustomerId = 1001+i,
                          CardNumber="890678"+i,
                          Total=1200+i,
                          AmountPaid=1200 + i,
