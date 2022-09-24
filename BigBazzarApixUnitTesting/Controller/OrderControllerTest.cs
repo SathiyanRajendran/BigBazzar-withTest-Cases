@@ -37,9 +37,9 @@ namespace BigBazzarApixUnitTesting.Controller
                 OrderDate=2022,
             };
             A.CallTo(()=>_orderrepository.GetOrderMasterById(id)).Returns(ordermaster);
-            var ordermasterRepository = new OrderController(_orderrepository,_cartrepository);
+            var ordermasterController = new OrderController(_orderrepository,_cartrepository);
             //Act
-            var tempResult = await ordermasterRepository.GetOrderMaster(id);
+            var tempResult = await ordermasterController.GetOrderMaster(id);
             var result=(tempResult.Result as OkObjectResult).Value as OrderMasters;
             //Assert
             var card = "234567890986";
@@ -143,32 +143,51 @@ namespace BigBazzarApixUnitTesting.Controller
         [Fact]
         public async Task OrderController_Buy_ReturnOk()
         {
-            var cart = new Carts()
+            //Arrange
+            var tempCart = new List<Carts>();
+            tempCart.Add( new Carts()
             {
                 CartId = 11,
                 ProductQuantity = 2,
-                ProductId = 13,
+                ProductId = 101,
                 CustomerId = 1000,
+                Products =new Products()
+                {
+                    ProductId=101,
+                    UnitPrice=10,
+                }
                            
-            };
+            });
             var ordermaster = new OrderMasters()
             {
                 OrderMasterId = 1,
-                CustomerId = cart.CustomerId,
+                CustomerId = 1000,
                 OrderDate = 2022,
-                Total = 26,
-                AmountPaid = 26,
+                Total = 20,
                 CardNumber = "12345",
             };
-            var orderdetail = new OrderDetails()
+            var orderDetail = new List<OrderDetails>();
+             orderDetail.Add( new OrderDetails()
             {
                 OrderDetailId = 11,
-                OrderMasterId = ordermaster.OrderMasterId,
-                ProductRate = 2,
+                OrderMasterId = 1,
+                ProductRate = 10,
                 ProductQuantity = 2,
-                ProductId = 13,
+                ProductId = 101,
 
-            };
+            });
+            A.CallTo(() => _cartrepository.GetAllCart(1000)).Returns(tempCart);
+            A.CallTo(() => _orderrepository.AddOrderMaster(ordermaster)).Returns(ordermaster);
+            A.CallTo(() => _orderrepository.AddOrderDetail(orderDetail[0])).Returns(orderDetail[0]);
+            var controller = new OrderController(_orderrepository,_cartrepository);
+
+            //Act
+            var result = await controller.Buy(1000);
+
+            //Assert
+            result.Total.Should().Be(20);
+            result.CustomerId.Should().Be(ordermaster.CustomerId);
+
           
         }
     }

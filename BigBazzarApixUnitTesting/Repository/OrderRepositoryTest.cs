@@ -61,29 +61,33 @@ namespace BigBazzarApixUnitTesting.Repository
         [Fact]
         public async Task OrderRepo_UpdateOrdermaster_ReturnOM()
         {
-            //var carts = new Carts()
-            //{
-            //    CustomerId = 1000,
-            //    ProductId = 101,
-            //};
-            var id = 1003;
+
             var ordermaster = new OrderMasters()
             {
-                OrderMasterId = id,
+                OrderMasterId = 1003,
                 CustomerId = 1001,
                 CardNumber = "890678910",
                 Total = 1300, //here total and amount paid must be equal
-                AmountPaid = 1300,              
+                AmountPaid = 1300,
+
             };
+            var cart = new Carts()
+            {
+                CustomerId = 1003,
+                ProductId=101,
+                ProductQuantity=12,
+            };
+           
            
             var inmemorytest=new DbContextTest();
             var dbContext=await inmemorytest.GetDatabaseContext();
             var orderrepo= new OrderRepo(dbContext);
 
             //Act
-            var ordermasterfind = await dbContext.OrderMasters.FindAsync(id);
+            var ordermasterfind = await dbContext.OrderMasters.FindAsync(1003);
             dbContext.Entry<OrderMasters>(ordermasterfind).State = EntityState.Detached;//has to be used only on xUnittesting
-            var result = await orderrepo.UpdateOrderMaster(id,ordermaster);
+            
+            var result = await orderrepo.UpdateOrderMaster(1003,ordermaster);
             //Assert
             var card = "890678910";
             card.Should().Be(result.CardNumber);

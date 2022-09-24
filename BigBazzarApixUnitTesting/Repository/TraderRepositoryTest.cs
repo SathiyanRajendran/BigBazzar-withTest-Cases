@@ -68,23 +68,16 @@ namespace BigBazzarApixUnitTesting.Repository
         [Fact]
         public async Task TraderRepo_GetTraderbyId_ReturnTraderById()
         {
-            var id = 11;
-            Traders traders1 = new Traders()
-            {
-                TraderId = id,
-                TraderEmail = "abcd1@gmail.com",
-                TraderName = "abc1",
-                Password = "12345678",
-                ConfirmPassword = "12345678",
-            };
+            
             //Arrange
             var dbContext=await GetDatabaseContext();
             var tradersRepository=new TraderRepo(dbContext);
             //Act
-            var result = await tradersRepository.GetTraderbyId(id);
+            var result = await tradersRepository.GetTraderbyId(10);
             //Assert
-            var name = result.TraderName;
-            result.Should().BeEquivalentTo(traders1);
+            var name = "abc0";
+            name.Should().Be(result.TraderName);
+
         }
         [Fact]
         public async Task TraderRepo_AddNewTraders_ReturnPostTrader()

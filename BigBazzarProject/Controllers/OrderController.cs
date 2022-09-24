@@ -57,6 +57,7 @@ namespace BigBazzar.Controllers
             om.OrderDate = 0;  //instead of datetime I used integer for date.
             om.CustomerId = customerid;
             om.Total = 0;
+            //--------------------------------------------------------------------
             if(c!=null)  //Whenever he have a cart he is ready to buy the carts and total is calculated here
             {
                 foreach(var cart in c)
