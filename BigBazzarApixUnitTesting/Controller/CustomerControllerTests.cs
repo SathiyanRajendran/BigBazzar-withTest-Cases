@@ -4,6 +4,7 @@ using BigBazzar.Repository;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,6 +104,53 @@ namespace BigBazzarApixUnitTesting.Controller
             var name = "abcd";
             name.Should().BeSameAs(customers.CustomerName);
             result.Value.Should().BeEquivalentTo(customers);
+        }
+
+        [Fact]
+        public async Task CustomersController_CustomerLogin_ReturnOk()
+        {
+            //Arrange
+            var id = 1000;
+            var customer = new Customers()
+            {
+                CustomerId = id,
+                CustomerEmail = "abcd@gmail.com",
+                CustomerName = "abcd",
+                Password = "12345678",
+                ConfirmPassword = "12345678",
+            };
+
+            A.CallTo(() => _repository.CustomerLogin(customer)).Returns(customer);
+            var controller=new CustomersController(_repository);
+
+            //Act
+            var result = await controller.CustomerLogin(customer);
+
+            //Assert
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+
+        public async Task CustomersController_PostFeedback_ReturnOk()
+        {
+            //Arrange
+            var id = 2000;
+            var feedback = new Feedback()
+            {
+                FeedbackId = id,
+                Comment = "Try to Improve your website.",
+                CustomerId = 1000,
+                ProductId = 1000,
+            };
+            A.CallTo(()=>_repository.AddFeedback(feedback)).Returns(feedback);
+            var controller=new CustomersController(_repository);
+
+            //Act
+            var result = await controller.PostFeedback(feedback);
+            //Assert
+            result.Should().NotBeNull();
+            result.Value.Should().BeEquivalentTo(feedback);
         }
     }
 }

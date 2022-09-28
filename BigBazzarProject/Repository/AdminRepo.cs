@@ -32,37 +32,39 @@ namespace BigBazzar.Repository
             return c;
         }
 
-        public async Task DeleteAdmin(int AdminId)
+        public async Task<bool> DeleteAdmin(int AdminId)
         {
             try
             {
                 Admin admin = _context.Admins.Find(AdminId);
                 _context.Admins.Remove(admin);
                 await _context.SaveChangesAsync();
+                return true;
             }
             catch
             {
-                throw new NotImplementedException();
+                return false;
             }
         }
 
-        public async Task DeleteCategory(int CategoryId)
+        public async Task<bool> DeleteCategory(int CategoryId)
         {
             try
             {
                 Categories C=_context.Categories.Find(CategoryId);
                 _context.Categories.Remove(C);
-                await _context.SaveChangesAsync();  
+                await _context.SaveChangesAsync();
+                return true;
             }
             catch
             {
-                throw new NotImplementedException();
+                return false;
             }
         }
 
-        public async Task<Admin> EditAdmin(int AdminId)
+        public async Task<Admin> EditAdmin(int AdminId,Admin A)
         {
-            Admin A= await _context.Admins.FindAsync(AdminId);
+             //await _context.Admins.FindAsync(AdminId);
             _context.Update(A);
             _context.SaveChanges();
             return A;

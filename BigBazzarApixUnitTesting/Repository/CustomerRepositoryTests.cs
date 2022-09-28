@@ -1,6 +1,7 @@
 ﻿using BigBazzar.Data;
 using BigBazzar.Models;
 using BigBazzar.Repository;
+using BigBazzarApixUnitTesting.DatabaseContext;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -116,6 +117,48 @@ namespace BigBazzarApixUnitTesting.Repository
             result.Should().BeEquivalentTo(customer);
             dbContext.Customers.Should().HaveCount(4);
 
+        }
+        [Fact]
+        public async Task CustomerRepo_CustomerLogin_ReturnOk()
+        {
+            //Arrange
+            var customer = new Customers()
+            {
+                CustomerEmail = "abcd0@gmail.com",
+                Password = "12345678",
+                ConfirmPassword = "12345678",
+            };
+            var dbContext=await GetDatabaseContext();
+            var customerRepo=new CustomerRepo(dbContext);
+
+            //Act
+            var result = await customerRepo.CustomerLogin(customer);
+            //Assert
+            var name = "abc0";
+            var id = 10;
+            result.CustomerName.Should().Be(name);
+            result.CustomerId.Should().Be(id);
+        }
+
+        [Fact]
+        public async Task CustomerRepo_AddFeedback_ReturnOk()
+        {
+            //Arrange
+            var feedback = new Feedback()
+            {
+                CustomerId = 1000,
+                ProductId = 1000,
+                Comment = "Your website is too good",
+            };
+            var inmemorytest = new DbContextTest();
+            var dbContext=await inmemorytest.GetDatabaseContext();
+            var customerRepo = new CustomerRepo(dbContext);
+            //Act
+            var result=await customerRepo.AddFeedback(feedback);
+
+            //Assert
+            dbContext.Feedbacks.Should().HaveCount(5);
+            result.FeedbackId.Should().Be(2004);
         }
     }
 }

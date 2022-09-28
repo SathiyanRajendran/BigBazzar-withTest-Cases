@@ -20,9 +20,14 @@ namespace BigBazzar.Controllers
             return await _repository.AddNewAdmin(A);
         }
         [HttpDelete("DeleteAdmin")]
-        public async Task AdminDelete(int AdminId)
+        public async Task<ActionResult> AdminDelete(int AdminId)
         {
-            await _repository.DeleteAdmin(AdminId);
+            bool ans = await _repository.DeleteAdmin(AdminId);
+
+            if (ans)
+                return Ok();
+            else
+                return BadRequest();
         }
         [HttpGet]
         public async Task<List<Categories>> GetAllCategories()
@@ -37,9 +42,14 @@ namespace BigBazzar.Controllers
         }
         
         [HttpDelete("DeleteCategory")]
-        public async Task DeleteCategory(int CategoryId)
+        public async Task<ActionResult> DeleteCategory(int CategoryId)
         {
-            await _repository.DeleteCategory(CategoryId);   
+            bool ans = await _repository.DeleteCategory(CategoryId);
+
+            if (ans)
+                return Ok();
+            else
+                return BadRequest();
         }
         [HttpPost("AdminLogin")]
         public async Task<ActionResult<Admin>> Login(Admin admin)

@@ -19,8 +19,12 @@ namespace BigBazzarApixUnitTesting.DatabaseContext
             var databaseContext = new BigBazzarContext(options);
             databaseContext.Database.EnsureCreated();
             int idno = 1000;
-            
-            
+            int feedbackid = 2000;
+            int adminId = 3000;
+            int categoryId = 4000;
+
+
+
                 for (int i = 0; i < 4; i++)
                 {
                     databaseContext.Traders.Add(
@@ -75,6 +79,33 @@ namespace BigBazzarApixUnitTesting.DatabaseContext
                         ProductQuantity = 2 + i,
                     }
                     );
+                databaseContext.Feedbacks.Add(
+                    new Feedback()
+                    {
+                        FeedbackId = feedbackid++,
+                        Comment =i + "Product is Nice",
+                        ProductId = 1000 + i,
+                        CustomerId = 1000 + i,
+                    }
+                    );
+                databaseContext.Admins.Add(
+                    new Admin()
+                    {
+                        AdminId = adminId++,
+                        AdminName = "admin" + i,
+                        AdminEmail = "admin" + i + "@gmail.com",
+                        AdminPassword = "12345678",
+                        ConfirmPassword = "12345678",
+                    }
+                    );
+                databaseContext.Categories.Add(
+                    new Categories()
+                    {
+                        CategoryId = categoryId++,
+                        CategoryName = "Electronics" + i,
+                    }
+                    );
+
 
 
                     await databaseContext.SaveChangesAsync();
