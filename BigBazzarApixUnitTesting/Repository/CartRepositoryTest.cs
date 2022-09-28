@@ -27,7 +27,7 @@ namespace BigBazzarApixUnitTesting.Repository
             //result.Count.Should().Be(4);
             4.Should().Be(result.Count);
             var tempdata = result.First();
-            12.Should().Be(tempdata.ProductQuantity);
+            1.Should().Be(tempdata.ProductQuantity);
 
             //Act
             try
@@ -49,20 +49,21 @@ namespace BigBazzarApixUnitTesting.Repository
             var dbContext = await useinmemorytest.GetDatabaseContext();
             var cartRepository = new CartRepo(dbContext);
             //Act
-            var result = await cartRepository.GetCartById(1002);
+            var result = await cartRepository.GetCartById(1001);
             //Assert
-            var qty = 12;
+            var qty = 1;
             qty.Should().Be(result.ProductQuantity);
         }
         [Fact]
         public async Task CartRepository_AddCarts_ReturnAddCarts()
         {
             //Arrange
-            //Here we increase the product quantity of already existing cart (12+12=24)
+            //Here we increase the product quantity of already existing cart (1+2=3)
+            //customer id and product id is same so that product quantity is increased.
             var cart = new Carts()
             {
-                ProductQuantity = 12,
-                ProductId = 101,
+                ProductQuantity = 2,
+                ProductId = 1000,
                 CustomerId = 1000,
             };
             var inmemorytest=new DbContextTest();
@@ -102,7 +103,7 @@ namespace BigBazzarApixUnitTesting.Repository
             var dbContext=await inmemorytest.GetDatabaseContext();
             var cartRepository=new CartRepo(dbContext);
             //Act
-            var result = await cartRepository.DeleteFromCart(1002);
+            var result = await cartRepository.DeleteFromCart(1001);
             //Assert
             result.Should().BeTrue();
             3.Should().Be(dbContext.Carts.Count());
@@ -111,7 +112,7 @@ namespace BigBazzarApixUnitTesting.Repository
         public async Task cartRepository_EditCart_ReturnEdit()
         {
             //Arrange
-            var id = 1002;
+            var id = 1001;
             var cart = new Carts()
             {
                 CartId = id,

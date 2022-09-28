@@ -21,7 +21,7 @@ namespace BigBazzarApixUnitTesting.Repository
             var dbContext = await inmemorytest.GetDatabaseContext();
             var orderrepo=new OrderRepo(dbContext);
             //Act
-            var result=await orderrepo.GetOrderMasterById(1003);
+            var result=await orderrepo.GetOrderMasterById(1002);
 
             //Assert
             try
@@ -29,7 +29,7 @@ namespace BigBazzarApixUnitTesting.Repository
                 var finalresult = (from i in dbContext.OrderMasters where i.OrderMasterId == result.OrderMasterId select i).FirstOrDefaultAsync();
                 var total = 1200;
                 result.Total.Should().Be(total);
-                result.OrderMasterId.CompareTo(1003);
+                result.OrderMasterId.CompareTo(1002);
             }
             catch(NullReferenceException e)
             {
@@ -64,19 +64,14 @@ namespace BigBazzarApixUnitTesting.Repository
 
             var ordermaster = new OrderMasters()
             {
-                OrderMasterId = 1003,
-                CustomerId = 1001,
+                OrderMasterId = 1002,
+                CustomerId = 1000,
                 CardNumber = "890678910",
-                Total = 1300, //here total and amount paid must be equal
-                AmountPaid = 1300,
+                Total = 1200, //here total and amount paid must be equal
+                AmountPaid = 1200,
 
             };
-            var cart = new Carts()
-            {
-                CustomerId = 1003,
-                ProductId=101,
-                ProductQuantity=12,
-            };
+           
            
            
             var inmemorytest=new DbContextTest();
@@ -84,13 +79,18 @@ namespace BigBazzarApixUnitTesting.Repository
             var orderrepo= new OrderRepo(dbContext);
 
             //Act
-            var ordermasterfind = await dbContext.OrderMasters.FindAsync(1003);
+            var ordermasterfind = await dbContext.OrderMasters.FindAsync(1002);
             dbContext.Entry<OrderMasters>(ordermasterfind).State = EntityState.Detached;//has to be used only on xUnittesting
             
-            var result = await orderrepo.UpdateOrderMaster(1003,ordermaster);
+            var result = await orderrepo.UpdateOrderMaster(1002,ordermaster);
             //Assert
+            //customer amount paid must be equal to the total amount then only ordermaster is updated.
             var card = "890678910";
             card.Should().Be(result.CardNumber);
+            result.AmountPaid.Should().Be(1200);
+            dbContext.Carts.Should().HaveCount(0);  //Here cart is removed after updating the ordermaster.
+            dbContext.Products.Should().HaveCount(4);
+            dbContext.Carts.Should().BeNullOrEmpty();
             4.Should().Be(dbContext.OrderMasters.Count());
 
         }
@@ -102,7 +102,7 @@ namespace BigBazzarApixUnitTesting.Repository
             var dbContext= await inmemoryTest.GetDatabaseContext();
             var orderrepo=new OrderRepo(dbContext);
             //Act
-            var result = await orderrepo.GetOrderDetailById(1004);
+            var result = await orderrepo.GetOrderDetailById(1003);
             //Assert
             var id = 100;
             id.Should().Be(result.ProductId);
@@ -120,8 +120,7 @@ namespace BigBazzarApixUnitTesting.Repository
                 OrderMasterId = 10,
                 ProductId = 123,
                 ProductRate = 150,
-                ProductQuantity = 2,
-                
+                ProductQuantity = 2,               
             };
             var inmemoryTest=new DbContextTest();
             var dbContext=await inmemoryTest.GetDatabaseContext();

@@ -5,6 +5,7 @@ using BigBazzarApixUnitTesting.DatabaseContext;
 using FluentAssertions;
 using FluentAssertions.Equivalency.Tracing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -159,6 +160,44 @@ namespace BigBazzarApixUnitTesting.Repository
             var tempProduct = result[1];
            // result.Count().Should().Be(4);
             "Boost1".Should().Be(tempProduct.ProductName);
+        }
+
+        private readonly IConfiguration _configuration;
+
+
+        [Fact]
+        public async Task TraderRepo_TraderLogin_ReturnTrader()
+        {
+            //Arrange
+            TraderToken token = new TraderToken()
+            {
+                traders = new Traders()
+                {
+                    TraderId = 10,
+                    TraderEmail = "abcd0@gmail.com",
+                    TraderName = "abc0",
+                    Password = "12345678",
+                    ConfirmPassword = "12345678",
+                },
+                Token = "defrghyjuklonmbgfrdeswaxcvb6543",
+            };
+            Traders traders = new Traders()
+            {
+                TraderEmail = "abcd0@gmail.com",
+                TraderName = "abc0",
+                Password = "12345678",
+                ConfirmPassword = "12345678",
+            };
+            var dbContext = await GetDatabaseContext();
+            var InMemoryConfigurationJWT = _configuration;
+            var tradeRepository= new TraderRepo(dbContext,InMemoryConfigurationJWT);
+
+            //Act
+            var result = await tradeRepository.TraderLogin(traders);
+
+            //Assert
+            result.Should().NotBeNull();
+
         }
     }
 }

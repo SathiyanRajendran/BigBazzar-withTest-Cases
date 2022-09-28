@@ -4,6 +4,7 @@ using BigBazzar.Repository;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using NuGet.Versioning;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,12 @@ namespace BigBazzarApixUnitTesting.Controller
     public class TradersControllerTest
     {
         private readonly ITraderRepo _repository;
+        private readonly IConfiguration _configuration;
 
         public TradersControllerTest()
         {
             _repository = A.Fake<ITraderRepo>();
+            _configuration = A.Fake<IConfiguration>();
         }
         [Fact]
         public void TradersController_GetTraders_ReturnOK()
@@ -28,7 +31,7 @@ namespace BigBazzarApixUnitTesting.Controller
            // var traders = A.Fake<ICollection<Traders>>();
             var tradersList=A.Fake<List<Traders>>();
             A.CallTo(() =>_repository.GetAllTraders()).Returns(tradersList);
-            var controller = new TradersController(_repository);
+            var controller = new TradersController(_repository,_configuration);
 
             //Act
             var result=  controller.GetTraders();
@@ -55,7 +58,7 @@ namespace BigBazzarApixUnitTesting.Controller
            // var traders = A.Fake<ICollection<Traders>>();
             //var tradersList = A.Fake<List<Traders>>();
             A.CallTo(() => _repository.AddNewTraders(trader)).Returns(trader);
-            var controller = new TradersController(_repository);
+            var controller = new TradersController(_repository,_configuration);
 
             //Act
             var result = await controller.PostTrader(trader);
@@ -81,7 +84,7 @@ namespace BigBazzarApixUnitTesting.Controller
 
             };
             A.CallTo(() => _repository.UpdateTraders(Id, trader)).Returns(trader);
-            var controller= new TradersController(_repository);
+            var controller= new TradersController(_repository, _configuration);
             //Act
             var fresult = await controller.PutTrader(Id,trader);
             var result=fresult.Value;
@@ -97,7 +100,7 @@ namespace BigBazzarApixUnitTesting.Controller
             //Arrange
             var traderId = 1000;
             A.CallTo(() => _repository.DeleteTraders(traderId)).Returns(true);
-            var controller = new TradersController(_repository);
+            var controller = new TradersController(_repository, _configuration);
             //Act
             var result=await controller.DeleteTrader(traderId);
             //Assert
@@ -118,7 +121,7 @@ namespace BigBazzarApixUnitTesting.Controller
                 ConfirmPassword = "12345",
             };
             A.CallTo(() => _repository.GetTraderbyId(traderId)).Returns(trader);
-            var controller = new TradersController(_repository);
+            var controller = new TradersController(_repository, _configuration);
 
             //Act
             var tempresult = await controller.GetTrader(traderId);
@@ -153,7 +156,7 @@ namespace BigBazzarApixUnitTesting.Controller
                 p.Add(products);
             }         
             A.CallTo(()=>_repository.GetProductByTraderId(traderId)).Returns(p);
-            var controller = new TradersController(_repository);
+            var controller = new TradersController(_repository, _configuration);
 
             //Act
             var result= await controller.GetProductByTraderId(traderId);
@@ -164,8 +167,58 @@ namespace BigBazzarApixUnitTesting.Controller
             count.Should().Be(3);
             
             result.Should().NotBeNull();
-            
+        }
+        private static Random random = new Random();
 
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        [Fact]
+        public async Task TradersController_TraderLogin_ReturnOk()
+        {
+            //Arrange
+            var expectedToken = RandomString(20);
+            var trader1 = new Traders()
+            {
+                TraderId = 1001,
+                TraderEmail = "abcd@gmail.com",
+                TraderName = "abcd",
+                Password = "12345678",
+                ConfirmPassword = "12345678",
+            };
+            TraderToken traderToken = new TraderToken()
+            {
+                traders = new Traders()
+                {
+                    TraderId = 1001,
+                    TraderEmail = "abcd@gmail.com",
+                    TraderName = "abcd",
+                    Password = "12345678",
+                    ConfirmPassword = "12345678",
+                },
+                Token = expectedToken,
+
+            };
+            A.CallTo(() => _repository.TraderLogin(trader1)).Returns(trader1);
+            var myConfiguration = new Dictionary<string, string>
+            {
+                {"JWT:ValidAudience", "User"},
+                {"JWT:ValidIssuer", "https://localhost:7210"},
+                {"JWT:Secret","JWTAuthenticationHIGHsecuredPasswordVVVp1OH7Xzyr"}
+            };
+            var _configuration=new ConfigurationBuilder()
+                .AddInMemoryCollection(myConfiguration)
+                .Build();
+            var controller = new TradersController(_repository,_configuration);
+
+            //Act
+            var result = await controller.TraderLogin(trader1);
+
+            //Assert
+            result.Should().NotBeNull();
         }
     }
 }

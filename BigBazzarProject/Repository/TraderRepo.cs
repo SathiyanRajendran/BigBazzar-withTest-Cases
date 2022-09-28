@@ -79,52 +79,51 @@ namespace BigBazzar.Repository
         }
         //-------------------------------------------------------------------------------------------------
 
-        public async Task<TraderToken> TraderLogin(Traders T)
+        public async Task<Traders> TraderLogin(Traders T)
         {
-            TraderToken Tt = new TraderToken();
-            Traders trader = await  (from i in _context.Traders 
-                                     where i.TraderEmail == T.TraderEmail && i.Password == T.Password 
-                                     select i).FirstOrDefaultAsync();
+            //TraderToken Tt = new TraderToken();
+            Traders trader = await  (from i in _context.Traders where i.TraderEmail == T.TraderEmail && i.Password == T.Password select i).FirstOrDefaultAsync();
             if (trader != null)
             {
-                var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name,trader.TraderEmail),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
+                return trader;
+                //var authClaims = new List<Claim>
+                //{
+                //    new Claim(ClaimTypes.Name,trader.TraderEmail),
+                //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                //};
 
 
 
 
-                var token = GetToken(authClaims);
-                string s = new JwtSecurityTokenHandler().WriteToken(token);
-                Tt.Token = s;
-                Tt.traders = trader;
-                return Tt;
+                //var token = GetToken(authClaims);
+                //string s = new JwtSecurityTokenHandler().WriteToken(token);
+                //Tt.Token = s;
+                //Tt.traders = trader;
+                //return Tt;
 
 
 
             }
             return null;
         }
-        private JwtSecurityToken GetToken(List<Claim> authClaims)
-        {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+        //private JwtSecurityToken GetToken(List<Claim> authClaims)
+        //{
+        //    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
 
 
-            var token = new JwtSecurityToken(
-                 issuer: _configuration["JWT:ValidIssuer"],
-                 audience: _configuration["JWT:ValidAudience"],
-                 expires: DateTime.Now.AddMinutes(30),
-                 claims: authClaims,
-                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                 ); ;
+        //    var token = new JwtSecurityToken(
+        //         issuer: _configuration["JWT:ValidIssuer"],
+        //         audience: _configuration["JWT:ValidAudience"],
+        //         expires: DateTime.Now.AddMinutes(30),
+        //         claims: authClaims,
+        //         signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+        //         ); ;
 
 
 
-            return token;
-        }
+        //    return token;
+        //}
         //--------------------------------------------------------------------------------------------------------
 
         public async Task<Traders> UpdateTraders(int TraderId, Traders Trader)

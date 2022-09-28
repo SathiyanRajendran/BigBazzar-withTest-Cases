@@ -38,7 +38,7 @@ namespace BigBazzarApixUnitTesting.DatabaseContext
                         new Products()
                         {
                             TraderId=1000,
-                            ProductId = idno++,
+                            ProductId = 1000+i,
                             ProductName = "Boost" + i,
                             UnitPrice = 150 + i,
                             ProductQuantity = 12,
@@ -50,15 +50,15 @@ namespace BigBazzarApixUnitTesting.DatabaseContext
                     {
                         CustomerId = 1000,
                         CartId = idno++,
-                        ProductQuantity = 12+i,
-                        ProductId = 101+i,
+                        ProductQuantity = 1+i,
+                        ProductId = 1000+i,
                     }
                    );
                 databaseContext.OrderMasters.Add(
                      new OrderMasters()
                      {
                          OrderMasterId = idno++,
-                         CustomerId = 1001+i,
+                         CustomerId = 1000+i,
                          CardNumber="890678"+i,
                          Total=1200+i,
                          AmountPaid=1200 + i,

@@ -9,7 +9,7 @@ namespace BigBazzar.Repository
         Task<List<Products>> GetProductByTraderId(int id);
         Task<Traders> AddNewTraders(Traders T);
         Task<Traders> UpdateTraders(int TraderId, Traders T);
-        Task<TraderToken> TraderLogin(Traders T);
+        Task<Traders> TraderLogin(Traders T);
         Task <bool> DeleteTraders(int TraderId);
     }
 }
